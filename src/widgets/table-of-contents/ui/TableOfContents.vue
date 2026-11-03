@@ -1,0 +1,36 @@
+<script setup lang="ts">
+import type { Chapter } from '@/entities/chapter'
+
+defineProps<{ chapters: Chapter[]; active: string; progress: number }>()
+const emit = defineEmits<{ navigate: [id: string] }>()
+
+const onSelect = (e: Event) => emit('navigate', (e.target as HTMLSelectElement).value)
+</script>
+
+<template>
+  <nav class="toc" aria-label="Содержание лонгрида">
+    <p class="toc-label">В ЭТОМ МАТЕРИАЛЕ</p>
+    <div class="toc-track"><div :style="{ width: progress * 100 + '%' }"></div></div>
+    <ol>
+      <li v-for="chapter in chapters" :key="chapter.id">
+        <a
+          :href="'#' + chapter.id"
+          :aria-current="active === chapter.id ? 'location' : undefined"
+          :class="{ active: active === chapter.id }"
+          @click.prevent="emit('navigate', chapter.id)"
+        ><span>{{ chapter.number }}</span>{{ chapter.label }}</a>
+      </li>
+      <li>
+        <a href="#conclusions" :class="{ active: active === 'conclusions' }" @click.prevent="emit('navigate', 'conclusions')"><span>09</span>Выводы</a>
+      </li>
+    </ol>
+    <label class="mobile-toc">
+      <span>Перейти к главе</span>
+      <select :value="active" @change="onSelect">
+        <option v-for="chapter in chapters" :key="chapter.id" :value="chapter.id">{{ chapter.number }} · {{ chapter.label }}</option>
+        <option value="conclusions">09 · Выводы</option>
+      </select>
+    </label>
+    <a class="toc-bottom" href="#sources">Источники и материалы ↗</a>
+  </nav>
+</template>

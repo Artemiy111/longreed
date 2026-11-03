@@ -1,3 +1,0 @@
-<script setup>
-import {ref} from 'vue';import {useIntersectionObserver,usePreferredReducedMotion} from '@vueuse/core';import gsap from 'gsap';const props=defineProps({value:Number,label:String});const el=ref(null),display=ref(props.value),reduced=usePreferredReducedMotion();let seen=false;useIntersectionObserver(el,([{isIntersecting}])=>{if(isIntersecting&&!seen){seen=true;if(reduced.value!=='reduce'){const state={n:0};gsap.to(state,{n:props.value,duration:1.2,ease:'power2.out',onUpdate:()=>display.value=Math.round(state.n)})}}})
-</script><template><div ref="el" class="stat"><strong>{{display.toString().padStart(2,'0')}}</strong><span>{{label}}</span></div></template>

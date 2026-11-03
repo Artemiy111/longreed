@@ -1,0 +1,44 @@
+<script setup lang="ts">
+import { ref } from 'vue'
+import type { Video } from '@/entities/video'
+
+defineProps<{ video: Video }>()
+
+const loaded = ref(false)
+const failed = ref(false)
+</script>
+
+<template>
+  <figure class="video-block">
+    <div class="video-frame">
+      <iframe
+        v-if="loaded"
+        :src="'https://www.youtube-nocookie.com/embed/' + video.id + '?autoplay=1'"
+        :title="video.title"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen
+      ></iframe>
+      <button v-else class="video-preview" @click="loaded = true">
+        <img
+          v-if="!failed"
+          :src="'https://i.ytimg.com/vi/' + video.id + '/hqdefault.jpg'"
+          @error="failed = true"
+          :alt="'Превью видео: ' + video.title"
+          loading="lazy"
+          width="480"
+          height="360"
+        />
+        <span class="video-shade"></span>
+        <span class="sr-only">Воспроизвести</span>
+        <span class="play-circle" aria-hidden="true">▶</span>
+        <span class="video-title"><small>ВИДЕО · IBM TECHNOLOGY</small>{{ video.title }}</span>
+      </button>
+    </div>
+    <figcaption>
+      <b>{{ video.title }}</b> · {{ video.author }} · {{ video.date }}
+      <p>{{ video.caption }}</p>
+      <a :href="'https://www.youtube.com/watch?v=' + video.id" target="_blank" rel="noopener noreferrer">Открыть на YouTube ↗</a>
+      <small class="media-note">Видео загружается только по нажатию. Доступность воспроизведения зависит от YouTube и сети.</small>
+    </figcaption>
+  </figure>
+</template>

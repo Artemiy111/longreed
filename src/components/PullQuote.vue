@@ -1,1 +1,0 @@
-<script setup>defineProps({text:String,attribution:String})</script><template><aside class="pullquote"><span class="quote-symbol">“</span><blockquote>{{text}}</blockquote><p>{{attribution}}</p></aside></template>
