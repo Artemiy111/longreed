@@ -1,0 +1,9 @@
+node_modules/
+.pnpm-store/
+dist/
+singlefile/
+src/assets/audio/commentary.wav
+qa/
+*.log
+.DS_Store
+.vercel/
